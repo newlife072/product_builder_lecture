@@ -1,14 +1,178 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍민식 | 로또 행운 번호 (5게임)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; background-color: #f4f7f6; }
+
+        header { background: #2c3e50; color: #fff; padding: 2.5rem 0; text-align: center; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 20px; }
+
+        .section {
+            background: #fff;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h2 { color: #2c3e50; margin-bottom: 1.5rem; border-bottom: 3px solid #3498db; padding-bottom: 5px; }
+
+        /* 로또 번호 표시 영역 (5줄) */
+        #lotto-display {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .lotto-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 50px;
+            border: 1px dashed #ccc;
+        }
+
+        .game-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* 로또 공 디자인 */
+        .ball {
+            width: 45px; height: 45px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: bold;
+            color: white; font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: inset -3px -3px 7px rgba(0,0,0,0.2);
+        }
+        .ball-1 { background: #fbc400; } .ball-11 { background: #69c8f2; }
+        .ball-21 { background: #ff7272; } .ball-31 { background: #aaa; } .ball-41 { background: #b0d840; }
+
+        /* 버튼 및 정보 */
+        .btn-generate {
+            background: #e67e22; color: white; border: none; padding: 15px 50px;
+            font-size: 1.2rem; border-radius: 30px; cursor: pointer; transition: 0.3s;
+            font-weight: bold; margin-bottom: 20px;
+        }
+        .btn-generate:hover { background: #d35400; transform: scale(1.05); }
+        
+        .probability-info {
+            padding: 15px; background: #fdf2f2;
+            border-radius: 8px; color: #e74c3c; font-weight: bold; font-size: 0.95rem;
+        }
+
+        /* 테이블 스타일 */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #f8f9fa; }
+
+        footer { text-align: center; padding: 3rem; color: #888; font-size: 0.85rem; }
+    </style>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+
+    <header>
+        <h1>홍민식의 로또 5게임 생성기</h1>
+        <p>버튼 한 번으로 이번 주 주인공이 되어보세요!</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="section">
+            <h2>📊 지난주 당첨 결과 (1158회)</h2>
+            <p style="margin-bottom: 10px;">당첨번호: <span style="font-weight:bold; color:#e67e22;">1, 10, 15, 22, 34, 45 + 12</span></p>
+            <table>
+                <thead>
+                    <tr><th>순위</th><th>당첨인원</th><th>1인당 당첨금액</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>1등</strong></td><td>12명</td><td>2,450,123,450원</td></tr>
+                    <tr><td>2등</td><td>85명</td><td>57,649,964원</td></tr>
+                    <tr><td>3등</td><td>3,120명</td><td>1,569,310원</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🎲 행운의 5게임 추출</h2>
+            
+            <div id="lotto-display">
+                <p style="color:#999; margin: 20px 0;">아래 버튼을 누르면 번호가 나타납니다.</p>
+            </div>
+
+            <button class="btn-generate" onclick="generateFiveGames()">5게임 번호 생성하기</button>
+
+            <div class="probability-info">
+                ⚠️ 1등 당첨 확률: 1 / 8,145,060 <br>
+                <span style="font-weight: normal; color: #666; font-size: 0.8rem;">
+                    다섯 게임을 구매할 시 확률은 약 0.0000615%로 상승합니다!
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Hong Min-sik. Good Luck!
+    </footer>
+
+    <script>
+        function generateNumbers() {
+            const numbers = [];
+            while (numbers.length < 6) {
+                const randomNum = Math.floor(Math.random() * 45) + 1;
+                if (!numbers.includes(randomNum)) {
+                    numbers.push(randomNum);
+                }
+            }
+            return numbers.sort((a, b) => a - b);
+        }
+
+        function createBall(num) {
+            const ball = document.createElement('div');
+            ball.classList.add('ball');
+            ball.innerText = num;
+            if (num <= 10) ball.classList.add('ball-1');
+            else if (num <= 20) ball.classList.add('ball-11');
+            else if (num <= 30) ball.classList.add('ball-21');
+            else if (num <= 40) ball.classList.add('ball-31');
+            else ball.classList.add('ball-41');
+            return ball;
+        }
+
+        function generateFiveGames() {
+            const display = document.getElementById('lotto-display');
+            display.innerHTML = ''; // 화면 초기화
+
+            for (let i = 1; i <= 5; i++) {
+                const row = document.createElement('div');
+                row.classList.add('lotto-row');
+
+                // 게임 라벨 (A, B, C, D, E 느낌)
+                const label = document.createElement('span');
+                label.classList.add('game-label');
+                label.innerText = 'Game ' + i;
+                row.appendChild(label);
+
+                // 번호 생성 및 공 추가
+                const numbers = generateNumbers();
+                numbers.forEach(num => {
+                    row.appendChild(createBall(num));
+                });
+
+                display.appendChild(row);
+            }
+        }
+    </script>
 </body>
 </html>
