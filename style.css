@@ -1,37 +1,126 @@
-body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
+:root {
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --header-bg: #2c3e50;
+    --header-text: #fff;
+    --section-bg: #fff;
+    --section-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    --h2-color: #2c3e50;
+    --h2-border: #3498db;
+    --lotto-row-bg: #f9f9f9;
+    --lotto-row-border: #ccc;
+    --game-label-color: #7f8c8d;
+    --btn-bg: #e67e22;
+    --btn-hover-bg: #d35400;
+    --info-bg: #fdf2f2;
+    --info-text: #e74c3c;
+    --table-border: #ddd;
+    --th-bg: #f8f9fa;
+    --footer-text: #888;
 }
 
-#lotto-numbers {
-  display: flex;
-  margin: 20px 0;
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --header-bg: #222;
+    --header-text: #f0f0f0;
+    --section-bg: #2c2c2c;
+    --section-shadow: 0 4px 15px rgba(255,255,255,0.05);
+    --h2-color: #f0f0f0;
+    --h2-border: #3498db;
+    --lotto-row-bg: #333;
+    --lotto-row-border: #555;
+    --game-label-color: #aaa;
+    --btn-bg: #d35400;
+    --btn-hover-bg: #e67e22;
+    --info-bg: #443c3c;
+    --info-text: #ff8c8c;
+    --table-border: #555;
+    --th-bg: #333;
+    --footer-text: #aaa;
 }
 
-.number {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 5px;
-  font-size: 24px;
-  font-weight: bold;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: var(--text-color); background-color: var(--bg-color); }
+
+header { background: var(--header-bg); color: var(--header-text); padding: 2.5rem 0; text-align: center; }
+#theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--header-text);
+    background: transparent;
+    color: var(--header-text);
+    cursor: pointer;
 }
 
-#generate-btn {
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #4CAF50;
-  color: white;
+.container { max-width: 900px; margin: 2rem auto; padding: 0 20px; }
+
+.section {
+    background: var(--section-bg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--section-shadow);
+    text-align: center;
 }
+
+h2 { color: var(--h2-color); margin-bottom: 1.5rem; border-bottom: 3px solid var(--h2-border); padding-bottom: 5px; }
+
+/* 로또 번호 표시 영역 (5줄) */
+#lotto-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.lotto-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--lotto-row-bg);
+    border-radius: 50px;
+    border: 1px dashed var(--lotto-row-border);
+}
+
+.game-label {
+    font-weight: bold;
+    color: var(--game-label-color);
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+/* 로또 공 디자인 */
+.ball {
+    width: 45px; height: 45px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+    color: white; font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    box-shadow: inset -3px -3px 7px rgba(0,0,0,0.2);
+}
+.ball-1 { background: #fbc400; } .ball-11 { background: #69c8f2; }
+.ball-21 { background: #ff7272; } .ball-31 { background: #aaa; } .ball-41 { background: #b0d840; }
+
+/* 버튼 및 정보 */
+.btn-generate {
+    background: var(--btn-bg); color: white; border: none; padding: 15px 50px;
+    font-size: 1.2rem; border-radius: 30px; cursor: pointer; transition: 0.3s;
+    font-weight: bold; margin-bottom: 20px;
+}
+.btn-generate:hover { background: var(--btn-hover-bg); transform: scale(1.05); }
+
+.probability-info {
+    padding: 15px; background: var(--info-bg);
+    border-radius: 8px; color: var(--info-text); font-weight: bold; font-size: 0.95rem;
+}
+
+/* 테이블 스타일 */
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th, td { padding: 12px; border: 1px solid var(--table-border); text-align: center; }
+th { background-color: var(--th-bg); }
+
+footer { text-align: center; padding: 3rem; color: var(--footer-text); font-size: 0.85rem; }
